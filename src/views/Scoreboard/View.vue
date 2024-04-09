@@ -9,9 +9,9 @@ export default {
       count1: 0,
       count2: 0,
       timer: '',
-      duration: 300,
+      duration: 30,
       isTimerRunning: false,
-      shotClock: 24,
+      shotClock: 5,
       intervalId: null,
       isShotClockRunning: false,
       shotclockAlert: false,
@@ -310,12 +310,12 @@ export default {
 
       <div class="row">
         <div class="col text-center">
+          <div class="kutsManny">
+            <p>KUTS MANNY BASKITBOL LEAGUE</p>
+          </div>
           <div v-if="shotclockAlert" class="shotclockAlert">
             {{ shotclockMessage }}
             <span class="close" @click="closeShotclockAlert">&times;</span>
-          </div>
-          <div class="kutsManny">
-            <p>KUTS MANNY BASKITBOL LEAGUE</p>
           </div>
           <div class="shotclock">
             <h1 style="font-size: 100px;">{{ countdown }}</h1>

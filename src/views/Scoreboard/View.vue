@@ -50,8 +50,11 @@ export default {
           if (this.duration > 0) {
             this.duration--;
           } else {
-            this.pauseTimer();
+            clearInterval(this.timer);
+            this.isTimerRunning = false;
             alert('End of Quarter');
+            this.duration = 30;
+            this.shotClock = 5;
           }
         }, 1000);
       }
@@ -63,7 +66,7 @@ export default {
       }
     },
     resetTimer() {
-      this.duration = 300; 
+      this.duration = 30;
     },
     addToCounter1() {
       this.count1 = this.count1 + 1
@@ -130,25 +133,33 @@ export default {
     },
     startShotClock() {
       if (!this.isShotClockRunning) {
+        this.isShotClockRunning = true;
         this.intervalId = setInterval(() => {
           if (this.shotClock > 0) {
             this.shotClock--;
-          } else {
-            this.isShotClockRunning = false;
-            this.isTimerRunning = false;
-            clearInterval(this.intervalId);
+          } else { 
             this.shotclockAlert = true;
+            this.isShotClockRunning = false;
+            clearInterval(this.intervalId);
+            this.pauseTimer();
           }
         }, 1000);
-        this.isShotClockRunning = true;
       }
     },
     pauseShotClock() {
+      if (this.isShotClockRunning) {
+        this.isShotClockRunning = false;
+        clearInterval(this.intervalId);
+      }
+    },
+    resetShotClock() {
+      this.shotClock = 5;
       this.isShotClockRunning = false;
       clearInterval(this.intervalId);
     },
-    resetShotClock() {
-      this.shotClock = 24;
+    switchShotClock() {
+      this.shotClock = 5;
+      this.isShotClockRunning = true;
     },
     closeShotclockAlert() {
       this.shotclockAlert = false;
@@ -315,19 +326,20 @@ export default {
           </div>
           <div v-if="shotclockAlert" class="shotclockAlert">
             {{ shotclockMessage }}
-            <span class="close" @click="closeShotclockAlert">&times;</span>
+            <span class="close" @click="() => {closeShotclockAlert(); resetShotClock();}">&times;</span>
           </div>
           <div class="shotclock">
             <h1 style="font-size: 100px;">{{ countdown }}</h1>
-            <button @click="() => {startTimer(); startShotClock();}" class="btn btn3-custom"><i class="bi bi-play-fill"></i></button>
+            <button @click="() => {startTimer();}" class="btn btn3-custom"><i class="bi bi-play-fill"></i></button>
             <button @click="() => {pauseTimer(); pauseShotClock();}" class="btn btn3-custom"><i class="bi bi-pause-fill"></i></button>
             <button @click="() => {pauseTimer(); resetTimer(); resetShotClock(); pauseShotClock();}" class="btn btn3-custom"><i class="bi bi-stop-fill"></i></button>
           </div>
           <div class="shotclock">
             <!-- <div class="shotclockbg"> -->
             <h1 style="font-size: 80px;">{{ shotClock }}</h1>
-            <!-- <button @click="startShotClock()" class="btn btn3-custom"><i class="bi bi-play-fill"></i></button>
-            <button @click="pauseShotClock()" class="btn btn3-custom"><i class="bi bi-pause-fill"></i></button> -->
+            <button @click="() => {startShotClock(); startTimer();}" class="btn btn3-custom"><i class="bi bi-play-fill"></i></button>
+            <!-- <button @click="pauseShotClock()" class="btn btn3-custom"><i class="bi bi-pause-fill"></i></button> -->
+            <button @click="switchShotClock()" class="btn btn3-custom">Switch</button>
             <button @click="resetShotClock()" class="btn btn3-custom">Reset</button>
             <!-- </div> -->
           </div>

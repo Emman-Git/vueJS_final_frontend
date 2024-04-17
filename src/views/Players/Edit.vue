@@ -26,7 +26,7 @@ export default {
     },
     methods: {
         fetchTeams() {
-            axios.get('http://127.0.0.1:8000/api/admin/teams').then(res => {
+            axios.get('http://127.0.0.1:8000/api/admin/allteams').then(res => {
                 this.teams = res.data.teams
             });
         },
@@ -36,31 +36,52 @@ export default {
 
                 this.model.player = res.data.player
             })
-            .catch(function (error) {
+                .catch(function (error) {
                     if (error.response) {
 
-                        if(error.response.status == 404) {
-                                alert(error.response.data.message);
+                        if (error.response.status == 404) {
+                            alert(error.response.data.message);
                         }
                     }
-            });
+                });
         },
         updatePlayer() {
+            const formData = new FormData();
+            if (this.model.player.player_name !== '') {
+                formData.append('player_name', this.model.player.player_name);
+            }
+            if (this.model.player.team !== '') {
+                formData.append('team', this.model.player.team);
+            }
+            if (this.model.player.jersey_number !== '') {
+                formData.append('jersey_number', this.model.player.jersey_number);
+            }
+            if (this.model.player.position !== '') {
+                formData.append('position', this.model.player.position);
+            }
+            if (this.model.player.image !== '') {
+                formData.append('image', this.model.player.image);
+            }
+
             var mythis = this;
-            axios.put(`http://127.0.0.1:8000/api/admin/players/${this.playerId}/edit`, this.model.player).then(res => {
+            axios.put(`http://127.0.0.1:8000/api/admin/players/${this.playerId}/edit`, formData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data' 
+                }
+            }).then(res => {
                 console.log(res)
                 alert(res.data.message);
 
                 this.errorList = '';
             })
-            .catch(function (error) {
+                .catch(function (error) {
                     if (error.response) {
 
-                        if(error.response.status == 422) {
-                                mythis.errorList = error.response.data.errors;
+                        if (error.response.status == 422) {
+                            mythis.errorList = error.response.data.errors;
                         }
-                        else if(error.response.status == 404) {
-                                alert(error.response.data.message);
+                        else if (error.response.status == 404) {
+                            alert(error.response.data.message);
                         }
                     } else if (error.request) {
                         console.log(error.request);
@@ -70,7 +91,9 @@ export default {
                 });
         },
         handleImageUpload(event) {
-            this.model.player.image = event.target.files[0];
+            if (event.target.files.length > 0) {
+                this.model.player.image = event.target.files[0];
+            }
         }
     },
 }
@@ -98,7 +121,8 @@ export default {
                     <label for="">Team</label>
                     <select v-model="model.player.team" class="form-select">
                         <option value="" disabled>Select a team</option>
-                        <option v-for="team in teams" :key="team.id" :value="team.team_name">{{ team.team_name }}</option>
+                        <option v-for="team in teams" :key="team.id" :value="team.team_name">{{ team.team_name }}
+                        </option>
                     </select>
                 </div>
                 <div class="mb-3">

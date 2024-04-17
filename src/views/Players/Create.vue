@@ -13,7 +13,7 @@ export default {
                     team: '',
                     jersey_number: '',
                     position: '',
-                    image: '',
+                    image: null,
                 }
             },
             teams: [],
@@ -24,14 +24,24 @@ export default {
     },
     methods: {
         fetchTeams() {
-            axios.get('http://127.0.0.1:8000/api/admin/teams').then(res => {
+            axios.get('http://127.0.0.1:8000/api/admin/allteams').then(res => {
                 this.teams = res.data.teams
             });
         },
         savePlayer() {
+            const formData = new FormData();
+            formData.append('player_name', this.model.player.player_name);
+            formData.append('team', this.model.player.team);
+            formData.append('jersey_number', this.model.player.jersey_number);
+            formData.append('position', this.model.player.position);
+            formData.append('image', this.model.player.image);
 
             var mythis = this;
-            axios.post('http://127.0.0.1:8000/api/admin/players', this.model.player).then(res => {
+            axios.post('http://127.0.0.1:8000/api/admin/players', formData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data'
+                }
+            }).then(res => {
                 console.log(res)
                 alert(res.data.message);
 
@@ -40,9 +50,11 @@ export default {
                     team: '',
                     jersey_number: '',
                     position: '',
-                    image: '',
+                    image: null,
                 }
                 this.errorList = '';
+
+                location.reload();
             })
                 .catch(function (error) {
                     if (error.response) {
@@ -86,7 +98,8 @@ export default {
                     <label for="">Team</label>
                     <select v-model="model.player.team" class="form-select">
                         <option value="" disabled>Select a team</option>
-                        <option v-for="team in teams" :key="team.id" :value="team.team_name">{{ team.team_name }}</option>
+                        <option v-for="team in teams" :key="team.id" :value="team.team_name">{{ team.team_name }}
+                        </option>
                     </select>
                 </div>
                 <div class="mb-3">

@@ -5,7 +5,9 @@ export default {
     name: 'teams',
     data() {
         return {
-            teams: []
+            teams: [],
+            currentPage: 1,
+            totalPages: 0,
         }
     },
     mounted() {
@@ -13,9 +15,24 @@ export default {
     },
     methods: {
         getTeams() {
-            axios.get('http://127.0.0.1:8000/api/admin/teams/archive').then(res => {
-                this.teams = res.data.teams
-            });
+            axios.get(`http://127.0.0.1:8000/api/admin/teams/archive?page=${this.currentPage}`)
+                .then(res => {
+                    this.teams = res.data.teams.data;
+                    this.totalPages = res.data.teams.last_page;
+                })
+                .catch(err => console.error(err));
+        },
+        prevPage() {
+            if (this.currentPage > 1) {
+                this.currentPage--;
+                this.getTeams();
+            }
+        },
+        nextPage() {
+            if (this.currentPage < this.totalPages) {
+                this.currentPage++;
+                this.getTeams();
+            }
         },
         deleteTeam(teamId) {
             if (confirm('Are you sure? This record will be gone forever.')) {
@@ -104,6 +121,11 @@ export default {
                         </tr>
                     </tbody>
                 </table>
+                <div class="pagination" v-if="this.teams.length > 0">
+                    <button class="paginationButton" @click="prevPage" :disabled="currentPage === 1"><i class="bi bi-chevron-left"></i></button>
+                    <span>Page {{ currentPage }} of {{ totalPages }}</span>
+                    <button class="paginationButton" @click="nextPage" :disabled="currentPage === totalPages"><i class="bi bi-chevron-right"></i></button>
+                </div>
             </div>
         </div>
     </div>
@@ -131,5 +153,18 @@ body {
 
 .restore {
     margin-right: 5px;
+}
+
+.paginationButton {
+    border: none;
+    background-color: white;
+    margin-left: 10px;
+    margin-right: 10px;
+}
+
+.paginationButton:not(:disabled):hover {
+    border: none;
+    background-color: white;
+    color: red;
 }
 </style>

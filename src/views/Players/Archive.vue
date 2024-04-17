@@ -5,7 +5,9 @@ export default {
     name: 'players',
     data() {
         return {
-            players: []
+            players: [],
+            currentPage: 1,
+            totalPages: 0,
         }
     },
     mounted() {
@@ -13,9 +15,24 @@ export default {
     },
     methods: {
         getPlayers() {
-            axios.get('http://127.0.0.1:8000/api/admin/players/archive').then(res => {
-                this.players = res.data.players
-            });
+            axios.get(`http://127.0.0.1:8000/api/admin/players/archive?page=${this.currentPage}`)
+                .then(res => {
+                    this.players = res.data.players.data;
+                    this.totalPages = res.data.players.last_page;
+                })
+                .catch(err => console.error(err));
+        },
+        prevPage() {
+            if (this.currentPage > 1) {
+                this.currentPage--;
+                this.getPlayers();
+            }
+        },
+        nextPage() {
+            if (this.currentPage < this.totalPages) {
+                this.currentPage++;
+                this.getPlayers();
+            }
         },
         deletePlayer(playerId) {
             if (confirm('Are you sure? This record will be gone forever.')) {
@@ -106,6 +123,11 @@ export default {
                         </tr>
                     </tbody>
                 </table>
+                <div class="pagination" v-if="this.players.length > 0">
+                    <button class="paginationButton" @click="prevPage" :disabled="currentPage === 1"><i class="bi bi-chevron-left"></i></button>
+                    <span>Page {{ currentPage }} of {{ totalPages }}</span>
+                    <button class="paginationButton" @click="nextPage" :disabled="currentPage === totalPages"><i class="bi bi-chevron-right"></i></button>
+                </div>
             </div>
         </div>
     </div>
@@ -133,5 +155,18 @@ body {
 
 .restore {
     margin-right: 5px;
+}
+
+.paginationButton {
+    border: none;
+    background-color: white;
+    margin-left: 10px;
+    margin-right: 10px;
+}
+
+.paginationButton:not(:disabled):hover {
+    border: none;
+    background-color: white;
+    color: red;
 }
 </style>

@@ -5,7 +5,10 @@ export default {
     name: 'teams',
     data() {
         return {
-            teams: []
+            teams: [],
+            currentPage: 1,
+            totalPages: 0,
+            searchQuery: '',
         }
     },
     mounted() {
@@ -13,9 +16,24 @@ export default {
     },
     methods: {
         getTeams() {
-            axios.get('http://127.0.0.1:8000/api/admin/teams').then(res => {
-                this.teams = res.data.teams
-            });
+            axios.get(`http://127.0.0.1:8000/api/admin/teams?page=${this.currentPage}&search=${this.searchQuery}`)
+                .then(res => {
+                    this.teams = res.data.teams.data;
+                    this.totalPages = res.data.teams.last_page;
+                })
+                .catch(err => console.error(err));
+        },
+        prevPage() {
+            if (this.currentPage > 1) {
+                this.currentPage--;
+                this.getTeams();
+            }
+        },
+        nextPage() {
+            if (this.currentPage < this.totalPages) {
+                this.currentPage++;
+                this.getTeams();
+            }
         },
         deleteTeam(teamId) {
             if (confirm('Are you sure to archive this team?')) {
@@ -24,14 +42,14 @@ export default {
 
                     location.reload();
                 })
-                .catch(function (error) {
-                    if (error.response) {
+                    .catch(function (error) {
+                        if (error.response) {
 
-                        if(error.response.status == 404) {
+                            if (error.response.status == 404) {
                                 alert(error.response.data.message);
+                            }
                         }
-                    }
-            });
+                    });
             }
         }
     },
@@ -48,8 +66,8 @@ export default {
                         <RouterLink class="archive" to="/teams/archive">Archive</RouterLink>
                         <RouterLink class="btn btn-primary" to="/teams/create">Add Team</RouterLink>
                     </span>
-                    
                 </h4>
+                <input type="text" v-model="searchQuery" placeholder="Search..." @input="getTeams">
             </div>
             <div class="card-body">
                 <table class="table table-bordered">
@@ -72,16 +90,17 @@ export default {
                             <td class="cell">{{ team.location }}</td>
                             <td class="cell">{{ team.conference }}</td>
                             <td class="cell">{{ team.image }}</td>
-                            <td class="cell"><RouterLink :to="{ path: '/teams/' + team.id + '/info' }">View
-                                    </RouterLink></td>
+                            <td class="cell">
+                                <RouterLink :to="{ path: '/teams/' + team.id + '/info' }">View
+                                </RouterLink>
+                            </td>
                             <td class="cell">{{ team.created_at }}</td>
                             <td class="cell">
                                 <span class="edit">
                                     <RouterLink :to="{ path: '/teams/' + team.id + '/edit' }" class="btn btn-info">Edit
                                     </RouterLink>
                                 </span>
-                                <button type="button" class="btn btn-danger"
-                                    @click="deleteTeam(team.id)">Trash</button>
+                                <button type="button" class="btn btn-danger" @click="deleteTeam(team.id)">Trash</button>
                             </td>
                         </tr>
                     </tbody>
@@ -91,6 +110,11 @@ export default {
                         </tr>
                     </tbody>
                 </table>
+                <div class="pagination" v-if="this.teams.length > 0">
+                    <button class="paginationButton" @click="prevPage" :disabled="currentPage === 1"><i class="bi bi-chevron-left"></i></button>
+                    <span>Page {{ currentPage }} of {{ totalPages }}</span>
+                    <button class="paginationButton" @click="nextPage" :disabled="currentPage === totalPages"><i class="bi bi-chevron-right"></i></button>
+                </div>
             </div>
         </div>
     </div>
@@ -124,5 +148,18 @@ body {
 
 .edit {
     margin-right: 5px;
+}
+
+.paginationButton {
+    border: none;
+    background-color: white;
+    margin-left: 10px;
+    margin-right: 10px;
+}
+
+.paginationButton:not(:disabled):hover {
+    border: none;
+    background-color: white;
+    color: red;
 }
 </style>

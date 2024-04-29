@@ -1,5 +1,6 @@
 <script>
-import axios from 'axios'
+import axios from 'axios';
+import Swal from 'sweetalert2';
 
 export default {
     name: 'playerEdit',
@@ -14,10 +15,11 @@ export default {
                     jersey_number: '',
                     position: '',
                     image: '',
-                }
+                    imagePreview: '',
+                },
             },
             teams: [],
-        }
+        };
     },
     mounted() {
         this.fetchTeams();
@@ -26,77 +28,46 @@ export default {
     },
     methods: {
         fetchTeams() {
-            axios.get('http://127.0.0.1:8000/api/admin/allteams').then(res => {
-                this.teams = res.data.teams
+            axios.get('http://127.0.0.1:8000/api/admin/allteams').then((res) => {
+                this.teams = res.data.teams;
             });
         },
         getPlayerData(playerId) {
-            axios.get(`http://127.0.0.1:8000/api/admin/players/${playerId}/edit`).then(res => {
-                console.log(res.data.player);
+            axios.get(`http://127.0.0.1:8000/api/admin/players/${playerId}/edit`)
+                .then((res) => {
+                    this.model.player = res.data.player;
 
-                this.model.player = res.data.player
-            })
-                .catch(function (error) {
-                    if (error.response) {
 
-                        if (error.response.status == 404) {
-                            alert(error.response.data.message);
-                        }
+                    if (this.model.player.image) {
+                        this.model.player.imagePreview = 'http://127.0.0.1:8000/images/' + this.model.player.image;
                     }
+                })
+                .catch((error) => {
+                    console.error('Error fetching player data:', error);
                 });
         },
         updatePlayer() {
-            const formData = new FormData();
-            if (this.model.player.player_name !== '') {
-                formData.append('player_name', this.model.player.player_name);
-            }
-            if (this.model.player.team !== '') {
-                formData.append('team', this.model.player.team);
-            }
-            if (this.model.player.jersey_number !== '') {
-                formData.append('jersey_number', this.model.player.jersey_number);
-            }
-            if (this.model.player.position !== '') {
-                formData.append('position', this.model.player.position);
-            }
-            if (this.model.player.image !== '') {
-                formData.append('image', this.model.player.image);
-            }
-
-            var mythis = this;
-            axios.put(`http://127.0.0.1:8000/api/admin/players/${this.playerId}/edit`, formData, {
-                headers: {
-                    'Content-Type': 'multipart/form-data' 
-                }
-            }).then(res => {
+            axios.put(`http://127.0.0.1:8000/api/admin/players/${this.playerId}/edit`, this.model.player)
+            .then((res) => {
+                // alert(res.data.message);
                 console.log(res)
-                alert(res.data.message);
-
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Success!',
+                    text: res.data.message,
+                })
                 this.errorList = '';
-            })
-                .catch(function (error) {
-                    if (error.response) {
 
-                        if (error.response.status == 422) {
-                            mythis.errorList = error.response.data.errors;
-                        }
-                        else if (error.response.status == 404) {
-                            alert(error.response.data.message);
-                        }
-                    } else if (error.request) {
-                        console.log(error.request);
-                    } else {
-                        console.log('Error', error.message);
-                    }
-                });
+            }).catch((error) => {
+                if (error.response && error.response.status === 422) {
+                    this.errorList = error.response.data.errors;
+                } else {
+                    console.error('Error updating player:', error);
+                }
+            });
         },
-        handleImageUpload(event) {
-            if (event.target.files.length > 0) {
-                this.model.player.image = event.target.files[0];
-            }
-        }
     },
-}
+};
 </script>
 
 <template>
@@ -143,6 +114,11 @@ export default {
                 <div class="mb-3">
                     <label for="">Image</label>
                     <input type="file" @change="handleImageUpload" class="form-control">
+                    <!-- Image preview -->
+                    <div v-if="model.player.imagePreview" class="mt-3 mb-5">
+                        <img :src="model.player.imagePreview" alt="Image Preview" style="height:110px; width: 140px;"
+                            class="rounded-3 shadow">
+                    </div>
                 </div>
                 <div class="mb-3">
                     <span class="update">

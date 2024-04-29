@@ -1,5 +1,6 @@
 <script>
-import axios from 'axios'
+import axios from 'axios';
+import Swal from 'sweetalert2';
 
 export default {
     name: 'teams',
@@ -35,39 +36,71 @@ export default {
             }
         },
         deleteTeam(teamId) {
-            if (confirm('Are you sure? This record will be gone forever.')) {
-                axios.delete(`http://127.0.0.1:8000/api/admin/teams/${teamId}/hard_delete`).then(res => {
-                    alert(res.data.message);
-
-                    location.reload();
-                })
-                .catch(function (error) {
-                    if (error.response) {
-
-                        if(error.response.status == 404) {
-                                alert(error.response.data.message);
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "Proceeding will permanently delete this team",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    axios.delete(`http://127.0.0.1:8000/api/admin/teams/${teamId}/hard_delete`).then(res => {
+                        Swal.fire(
+                            'Deleted!',
+                            res.data.message,
+                            'success'
+                        ).then(() => {
+                            location.reload();
+                        });
+                    }).catch(error => {
+                        if (error.response) {
+                            if (error.response.status == 404) {
+                                Swal.fire({
+                                    icon: 'error',
+                                    title: 'Oops...',
+                                    text: error.response.data.message,
+                                });
+                            }
                         }
-                    }
+                    });
+                }
             });
-            }
         },
         restoreTeam(teamId) {
-            if (confirm('Are you sure to restore this team?')) {
-                axios.get(`http://127.0.0.1:8000/api/admin/teams/${teamId}/archive`).then(res => {
-                    alert(res.data.message);
-
-                    location.reload();
-                })
-                .catch(function (error) {
-                    if (error.response) {
-
-                        if(error.response.status == 404) {
-                                alert(error.response.data.message);
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "Proceeding will restore this team from the archive",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    axios.get(`http://127.0.0.1:8000/api/admin/teams/${teamId}/archive`).then(res => {
+                        Swal.fire(
+                            'Restored!',
+                            res.data.message,
+                            'success'
+                        ).then(() => {
+                            location.reload();
+                        });
+                    }).catch(error => {
+                        if (error.response) {
+                            if (error.response.status == 404) {
+                                Swal.fire({
+                                    icon: 'error',
+                                    title: 'Oops...',
+                                    text: error.response.data.message,
+                                });
+                            }
                         }
-                    }
+                    });
+                }
             });
-            }
-        }
+        },
     },
 }
 </script>

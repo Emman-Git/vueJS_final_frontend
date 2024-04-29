@@ -5,41 +5,135 @@ import HelloWorld from './components/HelloWorld.vue'
 
 <template>
   <header>
+    <body>
+    <nav>
+      <div class="nav__logo">
+        <router-link to="/"><a href="#"><img src="/src/assets/MPBL Logo Hori Final.png" alt="logo" /></a></router-link>
+      </div>
+      <ul class="nav__links">
+    <li class="link">
+      <router-link to="/">Home</router-link>
+    </li>
+    <li class="link">
+      <router-link to="/about">About Us</router-link>
+    </li>
+    <li class="link">
+      <router-link to="/players">Players</router-link>
+    </li>
+    <li class="link">
+      <router-link to="/teams">Teams</router-link>
+    </li>
+    <li class="link">
+      <router-link to="/scoreboard">Scoreboard</router-link>
+    </li>
+  </ul>
+    </nav>
+    </body>
+  </header> 
 
-    <div class="wrapper">
-      <!-- NAVBAR ITO ----------------------------------------- -->
-      <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-        <div class="container-fluid">
-          <RouterLink class="navbar-brand" to="/">Navbar</RouterLink>
-          <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
-            data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
-            aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-          </button>
-          <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-              
-              <li class="nav-item">
-                <RouterLink class="nav-link active" aria-current="page" to="/about">About Us</RouterLink>
-              </li>
-              <li class="nav-item">
-                <RouterLink class="nav-link active" aria-current="page" to="/players">Players</RouterLink>
-              </li> 
-              <li class="nav-item">
-                <RouterLink class="nav-link active" aria-current="page" to="/teams">Teams</RouterLink>
-              </li> 
-              <li class="nav-item">
-                <RouterLink class="nav-link active" aria-current="page" to="/scoreboard">Scoreboard</RouterLink>
-              </li> 
-            </ul>
-          </div>
-        </div>
-      </nav>
-      <!-- END OF NAVBAR ------------------------------------ -->
-    </div>
-  </header>
 
   <RouterView />
 </template>
 
-<style scoped></style>
+<style scoped>
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap");
+
+/* :root {
+  --primary-color: #111317;
+  --primary-color-light: #1f2125;
+  --primary-color-extra-light: #35373b;
+  --secondary-color: rgb(147, 38, 38);
+  --secondary-color-dark: #bb4e1b;
+  --text-light: #d1d5db;
+  --white: #ffffff;
+  --max-width: 1200px;
+} */
+
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+
+
+.btn {
+  padding: 1rem 2rem;
+  outline: none;
+  border: none;
+  font-size: 1rem;
+  color: var(--white);
+  background-color: var(--secondary-color);
+  border-radius: 5px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.btn:hover {
+  background-color: var(--secondary-color-dark);
+}
+
+img {
+  width: 100%;
+  display: flex;
+}
+
+a {
+  text-decoration: none;
+}
+
+.bg__blur {
+  position: absolute;
+  box-shadow: 0 0 1000px 50px var(--secondary-color);
+  z-index: -1;
+}
+
+body {
+  font-family: "Poppins", sans-serif;
+  background-color: #111317;
+}
+
+nav {
+  max-width: 1200px;
+  margin: auto;
+  padding: 2rem 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 2rem;
+  color: white;
+  background-color: #111317;
+}
+
+.nav__logo {
+  max-width: 150px;
+}
+
+.nav__links {
+  list-style: none;
+  display: flex;
+  align-items: center;
+  gap: 3rem;
+}
+
+.link a {
+  position: relative;
+  padding-bottom: 0.75rem;
+  color: #ffffff;
+}
+
+.link a::after {
+  content: "";
+  position: absolute;
+  height: 2px;
+  width: 0;
+  left: 0;
+  bottom: 0;
+  background-color: rgb(147, 38, 38);
+  transition: 0.3s;
+}
+
+.link a:hover::after {
+  width: 50%;
+}
+</style>

@@ -58,7 +58,7 @@ export default {
                             <td class="cell">{{ player.player_name }}</td>
                             <td class="cell">{{ player.jersey_number }}</td>
                             <td class="cell">{{ player.position }}</td>
-                            <td class="cell">{{ player.image }}</td>
+                            <td class="cell"><img :src="'http://127.0.0.1:8000/images/' + player.image" alt="" style="height:110px; width: 140px;" class="rounded-3 shadow" v-if="player.image"></td>
                         </tr>
                     </tbody>
                     <tbody v-else>

@@ -1,5 +1,6 @@
 <script>
 import axios from 'axios'
+import Swal from 'sweetalert2';
 
 export default {
     name: 'playerCreate',
@@ -13,7 +14,7 @@ export default {
                     team: '',
                     jersey_number: '',
                     position: '',
-                    image: null,
+                    image: '',
                 }
             },
             teams: [],
@@ -36,41 +37,55 @@ export default {
             formData.append('position', this.model.player.position);
             formData.append('image', this.model.player.image);
 
-            var mythis = this;
             axios.post('http://127.0.0.1:8000/api/admin/players', formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data'
                 }
             }).then(res => {
                 console.log(res)
-                alert(res.data.message);
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Success!',
+                    text: res.data.message,
+                });
+
+                const input = this.$refs.fileInput;
+                if (input) {
+                    input.value = '';
+                }
 
                 this.model.player = {
                     player_name: '',
                     team: '',
                     jersey_number: '',
                     position: '',
-                    image: null,
-                }
+                    image: '',
+                    imagePreview: '',
+                };
                 this.errorList = '';
 
-                location.reload();
-            })
-                .catch(function (error) {
-                    if (error.response) {
-
-                        if (error.response.status == 422) {
-                            mythis.errorList = error.response.data.errors;
-                        }
-                    } else if (error.request) {
-                        console.log(error.request);
+                // location.reload();
+            }).catch(error => {
+                if (error.response) {
+                    if (error.response.status == 422) {
+                        this.errorList = error.response.data.errors;
                     } else {
-                        console.log('Error', error.message);
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Oops...',
+                            text: 'Something went wrong!',
+                        });
                     }
-                });
+                } else if (error.request) {
+                    console.log(error.request);
+                } else {
+                    console.log('Error', error.message);
+                }
+            });
         },
         handleImageUpload(event) {
             this.model.player.image = event.target.files[0];
+            this.model.player.imagePreview = URL.createObjectURL(event.target.files[0]);
         }
     },
 }
@@ -119,7 +134,12 @@ export default {
                 </div>
                 <div class="mb-3">
                     <label for="">Image</label>
-                    <input type="file" @change="handleImageUpload" class="form-control">
+                    <input type="file" ref="fileInput" @change="handleImageUpload" class="form-control">
+                    <!-- Image preview -->
+                    <div v-if="model.player.imagePreview" class="mt-3 mb-5">
+                        <img :src="model.player.imagePreview" alt="Image Preview" style="height:110px; width: 140px;"
+                            class="rounded-3 shadow">
+                    </div>
                 </div>
                 <div class="mb-3">
                     <span class="save">

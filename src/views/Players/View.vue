@@ -1,5 +1,6 @@
 <script>
-import axios from 'axios'
+import axios from 'axios';
+import Swal from 'sweetalert2';
 
 export default {
     name: 'players',
@@ -36,83 +37,107 @@ export default {
             }
         },
         deletePlayer(playerId) {
-            if (confirm('Are you sure to archive this player?')) {
-                axios.delete(`http://127.0.0.1:8000/api/admin/players/${playerId}/delete`).then(res => {
-                    alert(res.data.message);
-
-                    location.reload();
-                })
-                    .catch(function (error) {
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "Proceeding will add this player to the archive",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    axios.delete(`http://127.0.0.1:8000/api/admin/players/${playerId}/delete`).then(res => {
+                        Swal.fire(
+                            'Archived!',
+                            res.data.message,
+                            'success'
+                        ).then(() => {
+                            location.reload();
+                        });
+                    }).catch(error => {
                         if (error.response) {
-
                             if (error.response.status == 404) {
-                                alert(error.response.data.message);
+                                Swal.fire({
+                                    icon: 'error',
+                                    title: 'Oops...',
+                                    text: error.response.data.message,
+                                });
                             }
                         }
                     });
-            }
-        }
+                }
+            });
+        },
     },
 }
 </script>
 
 <template>
-    <div class="container">
-        <div class="card">
-            <div class="card-header">
-                <h4>
-                    Players
-                    <span class="float-end">
-                        <RouterLink class="archive" to="/players/archive">Archive</RouterLink>
-                        <RouterLink class="btn btn-primary" to="/players/create">Add Player</RouterLink>
-                    </span>
-                </h4>
-                <input type="text" v-model="searchQuery" placeholder="Search..." @input="getPlayers">
-            </div>
-            <div class="card-body">
-                <table class="table table-bordered">
-                    <thead>
-                        <tr>
-                            <th class="header">ID</th>
-                            <th class="header">Name</th>
-                            <th class="header">Team</th>
-                            <th class="header">Jersey</th>
-                            <th class="header">Position</th>
-                            <th class="header">Image</th>
-                            <th class="header">Created At</th>
-                            <th class="header">Action</th>
-                        </tr>
-                    </thead>
-                    <tbody v-if="this.players.length > 0">
-                        <tr v-for="(player, index) in this.players" :key="index">
-                            <td class="cell">{{ player.id }}</td>
-                            <td class="cell">{{ player.player_name }}</td>
-                            <td class="cell">{{ player.location }} {{ player.team_name }}</td>
-                            <td class="cell">{{ player.jersey_number }}</td>
-                            <td class="cell">{{ player.position }}</td>
-                            <td class="cell"><img :src="'http://127.0.0.1:8000/images/' + player.image" alt="" style="height:110px; width: 140px;" class="rounded-3 shadow" v-if="player.image"></td>
-                            <td class="cell">{{ player.created_at }}</td>
-                            <td class="cell">
-                                <span class="edit">
-                                    <RouterLink :to="{ path: '/players/' + player.id + '/edit' }" class="btn btn-info">
-                                        Edit
-                                    </RouterLink>
-                                </span>
-                                <button type="button" class="btn btn-danger"
-                                    @click="deletePlayer(player.id)">Trash</button>
-                            </td>
-                        </tr>
-                    </tbody>
-                    <tbody v-else>
-                        <tr>
-                            <td colspan="8" class="cell">NO PLAYERS FOUND</td>
-                        </tr>
-                    </tbody>
-                </table>
-                <div class="pagination" v-if="this.players.length > 0">
-                    <button class="paginationButton" @click="prevPage" :disabled="currentPage === 1"><i class="bi bi-chevron-left"></i></button>
-                    <span>Page {{ currentPage }} of {{ totalPages }}</span>
-                    <button class="paginationButton" @click="nextPage" :disabled="currentPage === totalPages"><i class="bi bi-chevron-right"></i></button>
+    <div class="whole">
+        <div class="container">
+            <div class="card">
+                <div class="card-header">
+                    <h4>
+                        All Players
+                        <span class="float-end">
+                            <RouterLink class="archive" to="/players/archive">Archive</RouterLink>
+                            <RouterLink class="add-btn" to="/players/create">Add Player</RouterLink>
+                        </span>
+                    </h4>
+                    <input type="text" v-model="searchQuery" placeholder="Search..." @input="getPlayers">
+                </div>
+                <div class="card-body">
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th class="header">ID</th>
+                                <th class="header">Name</th>
+                                <th class="header">Team</th>
+                                <th class="header">Jersey</th>
+                                <th class="header">Position</th>
+                                <th class="header">Image</th>
+                                <th class="header">Created At</th>
+                                <th class="header">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody v-if="this.players.length > 0">
+                            <tr v-for="(player, index) in this.players" :key="index">
+                                <td class="cell">{{ player.id }}</td>
+                                <td class="cell">{{ player.player_name }}</td>
+                                <td class="cell">{{ player.location }} {{ player.team_name }}</td>
+                                <td class="cell">{{ player.jersey_number }}</td>
+                                <td class="cell">{{ player.position }}</td>
+                                <td class="cell"><img :src="'http://127.0.0.1:8000/images/' + player.image" alt=""
+                                        style="height:105px; width: 135px;" class="rounded-3 shadow"
+                                        v-if="player.image">
+                                </td>
+                                <td class="cell">{{ player.created_at }}</td>
+                                <td class="cell">
+                                    <span class="edit">
+                                        <RouterLink :to="{ path: '/players/' + player.id + '/edit' }"
+                                            class="edit-btn">
+                                            Edit
+                                        </RouterLink>
+                                    </span>
+                                    <button type="button" class="trash-btn"
+                                        @click="deletePlayer(player.id)">Trash</button>
+                                </td>
+                            </tr>
+                        </tbody>
+                        <tbody v-else>
+                            <tr>
+                                <td colspan="8" class="cell">NO PLAYERS FOUND</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div class="pagination float-end" v-if="this.players.length > 0">
+                        <button class="paginationButton" @click="prevPage" :disabled="currentPage === 1"><i
+                                class="bi bi-chevron-left"></i></button>
+                        <span style="color: white; font-family: 'Poppins'; font-size: 18px;">Page {{ currentPage }} of {{ totalPages }}</span>
+                        <button class="paginationButton" @click="nextPage" :disabled="currentPage === totalPages"><i
+                                class="bi bi-chevron-right"></i></button>
+                    </div>
                 </div>
             </div>
         </div>
@@ -120,17 +145,64 @@ export default {
 </template>
 
 <style scoped>
-body {
+.whole {
+    width: 100%;
     height: 100%;
+    background-color: rgb(37, 37, 37);
+    display: flex;
+    position: relative;
 }
 
 .container {
-    margin-top: 20px;
+}
+
+.card {
+    margin-top: 5px;
+    margin-bottom: 30px;
+    border: 2px solid white;
+}
+
+.card-header {
+    font-family: 'Poppins';
+    background-color: rgb(53, 52, 52);
+    color: white;
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
+.add-btn {
+    background-color: #034AAD; 
+    border: 2px solid white;
+    border-radius: 10%;
+    color: white;
+    padding: 10px 12px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    transition: background-color 0.3s ease; 
+}
+
+.add-btn:hover {
+    background-color: #1a64ca; 
+}
+
+.card-body {
+    background-color: rgb(83, 83, 83);
+}
+
+.table {
+    border: 3px solid black;
+    font-family: 'Poppins';
+}
+
+.table td {
+    background-color: whitesmoke;
 }
 
 .header {
     text-align: center;
-    background-color: rgb(255, 29, 29);
+    background-color: #034AAD;
     font-weight: bold;
     color: white;
 }
@@ -140,11 +212,49 @@ body {
     background-color: rgb(249, 249, 249);
 }
 
-.archive {
-    margin-right: 20px;
-    font-size: 15px;
-    color: rgb(182, 0, 0);
+.edit-btn {
+    background-color: rgb(63, 62, 62); 
+    border: none;
+    border-radius: 8%;
+    color: white;
+    padding: 6px 15px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    transition: background-color 0.3s ease; 
 }
+
+.edit-btn:hover {
+    background-color: rgb(92, 92, 92); 
+}
+
+.trash-btn {
+    background-color: #d81b0d; 
+    border: none;
+    border-radius: 8%;
+    color: white;
+    padding: 6px 15px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    transition: background-color 0.3s ease; 
+}
+
+.trash-btn:hover {
+    background-color: #a7150b; 
+}
+
+.archive {
+    margin-right: 25px;
+    font-size: 18px;
+    color: #ff3d2f;
+}
+
+.archive:hover {
+    color: #ff928a; 
+    transition: all 0.3s ease; 
+}
+
 
 .edit {
     margin-right: 5px;
@@ -152,15 +262,21 @@ body {
 
 .paginationButton {
     border: none;
-    background-color: white;
+    background-color: rgb(83, 83, 83);
     margin-left: 10px;
     margin-right: 10px;
+    color: white;
+    transition: all 0.3s ease; 
+    font-size: 18px;
+}
+
+.paginationButton:disabled {
+    color: rgba(255, 255, 255, 0.404);
 }
 
 .paginationButton:not(:disabled):hover {
     border: none;
-    background-color: white;
+    background-color: rgb(83, 83, 83);
     color: red;
 }
-
 </style>

@@ -1,5 +1,6 @@
 <script>
-import axios from 'axios'
+import axios from 'axios';
+import Swal from 'sweetalert2';
 
 export default {
     name: 'players',
@@ -35,39 +36,71 @@ export default {
             }
         },
         deletePlayer(playerId) {
-            if (confirm('Are you sure? This record will be gone forever.')) {
-                axios.delete(`http://127.0.0.1:8000/api/admin/players/${playerId}/hard_delete`).then(res => {
-                    alert(res.data.message);
-
-                    location.reload();
-                })
-                .catch(function (error) {
-                    if (error.response) {
-
-                        if(error.response.status == 404) {
-                                alert(error.response.data.message);
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "Proceeding will permanently delete this player",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    axios.delete(`http://127.0.0.1:8000/api/admin/players/${playerId}/hard_delete`).then(res => {
+                        Swal.fire(
+                            'Deleted!',
+                            res.data.message,
+                            'success'
+                        ).then(() => {
+                            location.reload();
+                        });
+                    }).catch(error => {
+                        if (error.response) {
+                            if (error.response.status == 404) {
+                                Swal.fire({
+                                    icon: 'error',
+                                    title: 'Oops...',
+                                    text: error.response.data.message,
+                                });
+                            }
                         }
-                    }
+                    });
+                }
             });
-            }
         },
         restorePlayer(playerId) {
-            if (confirm('Are you sure to restore this player?')) {
-                axios.get(`http://127.0.0.1:8000/api/admin/players/${playerId}/archive`).then(res => {
-                    alert(res.data.message);
-
-                    location.reload();
-                })
-                .catch(function (error) {
-                    if (error.response) {
-
-                        if(error.response.status == 404) {
-                                alert(error.response.data.message);
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "Proceeding will restore this player from the archive",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    axios.get(`http://127.0.0.1:8000/api/admin/players/${playerId}/archive`).then(res => {
+                        Swal.fire(
+                            'Restored!',
+                            res.data.message,
+                            'success'
+                        ).then(() => {
+                            location.reload();
+                        });
+                    }).catch(error => {
+                        if (error.response) {
+                            if (error.response.status == 404) {
+                                Swal.fire({
+                                    icon: 'error',
+                                    title: 'Oops...',
+                                    text: error.response.data.message,
+                                });
+                            }
                         }
-                    }
+                    });
+                }
             });
-            }
-        }
+        },
     },
 }
 </script>
@@ -105,7 +138,7 @@ export default {
                             <td class="cell">{{ player.team }}</td>
                             <td class="cell">{{ player.jersey_number }}</td>
                             <td class="cell">{{ player.position }}</td>
-                            <td class="cell">{{ player.image }}</td>
+                            <td class="cell"><img :src="'http://127.0.0.1:8000/images/' + player.image" alt="" style="height:110px; width: 140px;" class="rounded-3 shadow" v-if="player.image"></td>
                             <td class="cell">{{ player.deleted_at }}</td>
                             <td class="cell">
                                 <span class="restore">

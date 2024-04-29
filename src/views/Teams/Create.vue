@@ -1,5 +1,6 @@
 <script>
-import axios from 'axios'
+import axios from 'axios';
+import Swal from 'sweetalert2';
 
 export default {
     name: 'teamCreate',
@@ -31,7 +32,11 @@ export default {
             var mythis = this;
             axios.post('http://127.0.0.1:8000/api/admin/teams', this.model.team).then(res => {
                 console.log(res)
-                alert(res.data.message);
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Success!',
+                    text: res.data.message,
+                });
 
                 this.model.team = {
                     team_name: '',
@@ -40,19 +45,23 @@ export default {
                     image: '',
                 }
                 this.errorList = '';
-            })
-                .catch(function (error) {
-                    if (error.response) {
-
-                        if (error.response.status == 422) {
-                            mythis.errorList = error.response.data.errors;
-                        }
-                    } else if (error.request) {
-                        console.log(error.request);
+            }).catch(error => {
+                if (error.response) {
+                    if (error.response.status == 422) {
+                        this.errorList = error.response.data.errors;
                     } else {
-                        console.log('Error', error.message);
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Oops...',
+                            text: 'Something went wrong!',
+                        });
                     }
-                });
+                } else if (error.request) {
+                    console.log(error.request);
+                } else {
+                    console.log('Error', error.message);
+                }
+            });
         },
         handleImageUpload(event) {
             this.model.team.image = event.target.files[0];

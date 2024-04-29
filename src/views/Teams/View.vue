@@ -1,5 +1,6 @@
 <script>
-import axios from 'axios'
+import axios from 'axios';
+import Swal from 'sweetalert2';
 
 export default {
     name: 'teams',
@@ -36,22 +37,38 @@ export default {
             }
         },
         deleteTeam(teamId) {
-            if (confirm('Are you sure to archive this team?')) {
-                axios.delete(`http://127.0.0.1:8000/api/admin/teams/${teamId}/delete`).then(res => {
-                    alert(res.data.message);
-
-                    location.reload();
-                })
-                    .catch(function (error) {
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "Proceeding will add this team to the archive",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    axios.delete(`http://127.0.0.1:8000/api/admin/teams/${teamId}/delete`).then(res => {
+                        Swal.fire(
+                            'Archived!',
+                            res.data.message,
+                            'success'
+                        ).then(() => {
+                            location.reload();
+                        });
+                    }).catch(error => {
                         if (error.response) {
-
                             if (error.response.status == 404) {
-                                alert(error.response.data.message);
+                                Swal.fire({
+                                    icon: 'error',
+                                    title: 'Oops...',
+                                    text: error.response.data.message,
+                                });
                             }
                         }
                     });
-            }
-        }
+                }
+            });
+        },
     },
 }
 </script>
@@ -127,6 +144,7 @@ body {
 
 .container {
     margin-top: 20px;
+    margin: auto;
 }
 
 .header {

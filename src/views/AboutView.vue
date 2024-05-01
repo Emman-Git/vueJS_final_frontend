@@ -52,7 +52,7 @@
 <style scoped>
 @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap");
 body {
-  background-color: #111317;
+  background-color: rgb(37, 37, 37);
 }
 
 *{
@@ -83,7 +83,7 @@ section{
 }
 
 .text h4{
-  color: #ce1446;
+  color: #FF0B01;
   font-size: 16px;
   font-weight: 600;
   text-transform: uppercase;
@@ -103,7 +103,7 @@ hr{
   width: 30%;
   border: none;
   height: 2px;
-  background-color: #ce1446;
+  background-color: #FF0B01;
   margin-bottom: 50px;
 }
 

@@ -41,20 +41,25 @@ export default {
                 title: 'Are you sure?',
                 text: "Proceeding will add this player to the archive",
                 icon: 'warning',
+                iconColor: '#d81b0d',
                 showCancelButton: true,
-                confirmButtonColor: '#3085d6',
-                cancelButtonColor: '#d33',
+                confirmButtonColor: '#d81b0d',
+                cancelButtonColor: 'rgb(63, 62, 62)',
                 confirmButtonText: 'Yes'
             }).then((result) => {
                 if (result.isConfirmed) {
                     axios.delete(`http://127.0.0.1:8000/api/admin/players/${playerId}/delete`).then(res => {
-                        Swal.fire(
-                            'Archived!',
-                            res.data.message,
-                            'success'
-                        ).then(() => {
-                            location.reload();
-                        });
+                        Swal.fire({
+                            title: 'Archived!',
+                            text: res.data.message,
+                            icon: 'success',
+                            iconColor: '#034AAD',
+                            confirmButtonColor: '#034AAD',
+                            confirmButtonText: 'OK'
+                        })
+                            .then(() => {
+                                location.reload();
+                            });
                     }).catch(error => {
                         if (error.response) {
                             if (error.response.status == 404) {
@@ -85,7 +90,8 @@ export default {
                             <RouterLink class="add-btn" to="/players/create">Add Player</RouterLink>
                         </span>
                     </h4>
-                    <input type="text" v-model="searchQuery" placeholder="Search..." @input="getPlayers">
+                    <input type="text" v-model="searchQuery" placeholder="Search..." @input="getPlayers"
+                        class="searchBox">
                 </div>
                 <div class="card-body">
                     <table class="table table-bordered">
@@ -115,8 +121,7 @@ export default {
                                 <td class="cell">{{ player.created_at }}</td>
                                 <td class="cell">
                                     <span class="edit">
-                                        <RouterLink :to="{ path: '/players/' + player.id + '/edit' }"
-                                            class="edit-btn">
+                                        <RouterLink :to="{ path: '/players/' + player.id + '/edit' }" class="edit-btn">
                                             Edit
                                         </RouterLink>
                                     </span>
@@ -134,7 +139,8 @@ export default {
                     <div class="pagination float-end" v-if="this.players.length > 0">
                         <button class="paginationButton" @click="prevPage" :disabled="currentPage === 1"><i
                                 class="bi bi-chevron-left"></i></button>
-                        <span style="color: white; font-family: 'Poppins'; font-size: 18px;">Page {{ currentPage }} of {{ totalPages }}</span>
+                        <span style="color: white; font-family: 'Poppins'; font-size: 18px;">Page {{ currentPage }} of
+                            {{ totalPages }}</span>
                         <button class="paginationButton" @click="nextPage" :disabled="currentPage === totalPages"><i
                                 class="bi bi-chevron-right"></i></button>
                     </div>
@@ -147,18 +153,20 @@ export default {
 <style scoped>
 .whole {
     width: 100%;
-    height: 100%;
+    height: 90vh;
     background-color: rgb(37, 37, 37);
     display: flex;
     position: relative;
+    overflow-y: auto;
 }
 
 .container {
+    /* padding-bottom: 50px; */
 }
 
 .card {
-    margin-top: 5px;
-    margin-bottom: 30px;
+    margin-top: 15px;
+    /* margin-bottom: 30px; */
     border: 2px solid white;
 }
 
@@ -170,8 +178,17 @@ export default {
     padding-bottom: 10px;
 }
 
+.searchBox {
+    padding: 3px 10px;
+    font-size: 16px;
+    border: 2px solid black;
+    border-radius: 5px;
+    outline: none;
+    transition: border-color 0.3s ease;
+}
+
 .add-btn {
-    background-color: #034AAD; 
+    background-color: #034AAD;
     border: 2px solid white;
     border-radius: 10%;
     color: white;
@@ -180,11 +197,11 @@ export default {
     text-decoration: none;
     display: inline-block;
     font-size: 16px;
-    transition: background-color 0.3s ease; 
+    transition: background-color 0.3s ease;
 }
 
 .add-btn:hover {
-    background-color: #1a64ca; 
+    background-color: #1a64ca;
 }
 
 .card-body {
@@ -198,6 +215,8 @@ export default {
 
 .table td {
     background-color: whitesmoke;
+    vertical-align: middle;
+    font-size: 16px;
 }
 
 .header {
@@ -205,6 +224,7 @@ export default {
     background-color: #034AAD;
     font-weight: bold;
     color: white;
+    font-size: 16px;
 }
 
 .cell {
@@ -213,7 +233,7 @@ export default {
 }
 
 .edit-btn {
-    background-color: rgb(63, 62, 62); 
+    background-color: rgb(63, 62, 62);
     border: none;
     border-radius: 8%;
     color: white;
@@ -221,15 +241,15 @@ export default {
     text-align: center;
     text-decoration: none;
     display: inline-block;
-    transition: background-color 0.3s ease; 
+    transition: background-color 0.3s ease;
 }
 
 .edit-btn:hover {
-    background-color: rgb(92, 92, 92); 
+    background-color: rgb(92, 92, 92);
 }
 
 .trash-btn {
-    background-color: #d81b0d; 
+    background-color: #d81b0d;
     border: none;
     border-radius: 8%;
     color: white;
@@ -237,11 +257,11 @@ export default {
     text-align: center;
     text-decoration: none;
     display: inline-block;
-    transition: background-color 0.3s ease; 
+    transition: background-color 0.3s ease;
 }
 
 .trash-btn:hover {
-    background-color: #a7150b; 
+    background-color: #a7150b;
 }
 
 .archive {
@@ -251,8 +271,8 @@ export default {
 }
 
 .archive:hover {
-    color: #ff928a; 
-    transition: all 0.3s ease; 
+    color: #ff928a;
+    transition: all 0.3s ease;
 }
 
 
@@ -266,7 +286,7 @@ export default {
     margin-left: 10px;
     margin-right: 10px;
     color: white;
-    transition: all 0.3s ease; 
+    transition: all 0.3s ease;
     font-size: 18px;
 }
 

@@ -133,6 +133,8 @@ export default {
             this.resetShotClock();
             this.cycleQuarter();
             this.endQtr = true;
+            this.resetFoul1();
+            this.resetFoul2();
           }
         }, 1000);
       }

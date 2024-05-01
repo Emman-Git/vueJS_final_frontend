@@ -6,7 +6,7 @@
         <span class="bg__blur"></span>
         <span class="bg__blur header__blur"></span>
         <h4>REPRESENTING BATANG GEN SAN</h4>
-        <h1><span>MANNY'S</span> BASKETBALL LEAGUE</h1>
+        <h1><span>MANNY PACQUIAO'S</span> BASKETBALL LEAGUE</h1>
         <p>
           Welcome to Manny's Basketball League, where the court is your canvas and the game is your masterpiece. 
           Join us in unleashing your potential on the hardwood as you embark on a journey towards a stronger, fitter, 
@@ -111,16 +111,10 @@
 </template>
 
 <style scoped>
-/* :root {
-  --primary-color: #111317;
-  --primary-color-light: #1f2125;
-  --primary-color-extra-light: #35373b;
-  --secondary-color: rgb(147, 38, 38);
-  --secondary-color-dark: #bb4e1b;
-  --text-light: #d1d5db;
-  --white: #ffffff;
-  --max-width: 1200px;
-} */
+main{
+  background-color: rgb(37, 37, 37);
+
+}
 
 .header__container {
   position: relative;
@@ -139,9 +133,9 @@
   font-size: 10rem;
   font-weight: 700;
   line-height: 7rem;
-  color: var(--white);
-  opacity: 0.05;
-  z-index: -1;
+  color: #ffffff;
+  opacity: 0.1;
+  z-index: -0.3;
 }
 
 .header__blur {
@@ -151,9 +145,9 @@
 
 .header__content h4 {
   margin-bottom: 1rem;
-  font-size: 1rem;
+  font-size: 1.3rem;
   font-weight: 600;
-  color: var(--secondary-color);
+  color: #FF0B01;
 }
 
 .header__content h1 {
@@ -161,17 +155,17 @@
   font-size: 5rem;
   font-weight: 700;
   line-height: 6rem;
-  color: var(--white);
+  color: #ffffff;
 }
 
 .header__content h1 span {
   -webkit-text-fill-color: transparent;
-  -webkit-text-stroke: 1px var(--white);
+  -webkit-text-stroke: 1px #ffffff;
 }
 
 .header__content p {
   margin-bottom: 2rem;
-  color: var(--text-light);
+  color: #d1d5db;
 }
 
 .header__image {
@@ -187,9 +181,9 @@
   font-size: 40rem;
   font-weight: 400;
   line-height: 20rem;
-  color: var(--secondary-color);
+  color: rgb(147, 38, 38);
   opacity: 0.1;
-  z-index: -1;
+  z-index: -0.1;
 }
 
 .header__image img {
@@ -212,15 +206,15 @@
 
 .explore__card {
   padding: 1rem;
-  background-color: var(--primary-color-light);
+  background-color: #1f2125;
   border: 2px solid transparent;
   border-radius: 10px;
-  transition: 0.3s;
+  transition: 0.3s ease;
 }
 
 .explore__card:hover {
-  background-color: var(--primary-color-extra-light);
-  border-color: var(--secondary-color);
+  background-color: #35373b;
+  border-color: #034AAD;
 }
 
 .explore__card span {
@@ -228,8 +222,8 @@
   padding: 2px 9px;
   margin-bottom: 1rem;
   font-size: 1.75rem;
-  color: var(--white);
-  background-color: var(--secondary-color-dark);
+  color: #ffffff;
+  background-color: #FF0B01;
   border-radius: 5px;
 }
 
@@ -237,21 +231,21 @@
   margin-bottom: 0.5rem;
   font-size: 1.2rem;
   font-weight: 600;
-  color: var(--white);
+  color: #ffffff;
 }
 
 .explore__card p {
   margin-bottom: 1rem;
-  color: var(--text-light);
+  color: #ffffff;
 }
 
 .explore__card a {
-  color: var(--white);
+  color: #ffffff;
   transition: 0.3s;
 }
 
 .explore__card a:hover {
-  color: var(--secondary-color);
+  color: rgb(147, 38, 38);
 }
 
 .class__container {
@@ -291,21 +285,24 @@
 }
 
 .class__content p {
-  margin-bottom: 4rem;
-  color: var(--text-light);
+  margin-bottom: 1rem;
+  color: #ffffff;
 }
 
 .join__image {
-  margin-top: 1rem;
+  position: relative;
+  left: 130px;
+  margin-top: 3rem;
   position: relative;
 }
 
 .join__image img {
-  border-radius: 5px;
+  border-radius: 10px;
 }
 
 .join__grid {
   position: absolute;
+  left: -130px;
   bottom: -5rem;
   width: calc(100% - 4rem);
   padding: 2rem;
@@ -313,7 +310,7 @@
   display: flex;
   flex-wrap: wrap;
   gap: 2rem;
-  background-color: var(--primary-color-light);
+  background-color: #1f2125;
   border-radius: 10px;
 }
 
@@ -327,8 +324,8 @@
 .join__card span {
   padding: 5px 12px;
   font-size: 1.75rem;
-  color: var(--white);
-  background-color: var(--secondary-color-dark);
+  color:  #ffffff;
+  background-color: #FF0B01;
   border-radius: 5px;
 }
 
@@ -336,15 +333,15 @@
   margin-bottom: 0.5rem;
   font-size: 1.2rem;
   font-weight: 500;
-  color: var(--white);
+  color: #ffffff;
 }
 
 .join__card p {
-  color: var(--text-light);
+  color: #d1d5db;
 }
 
 .section__container {
-  max-width: var(--max-width);
+  max-width: 1200px;
   margin: auto;
   padding: 5rem 1rem;
 }
@@ -354,14 +351,14 @@
   font-size: 2.25rem;
   font-weight: 600;
   text-align: center;
-  color: var(--white);
+  color: #ffffff;
 }
 
 .section__subheader {
   max-width: 600px;
   margin: auto;
   text-align: center;
-  color: var(--text-light);
+  color: #d1d5db;
 }
 
 </style>

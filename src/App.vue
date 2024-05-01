@@ -37,40 +37,19 @@ import HelloWorld from './components/HelloWorld.vue'
 
 <style scoped>
 @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap");
-
-/* :root {
+:root {
   --primary-color: #111317;
-  --primary-color-light: #1f2125;
-  --primary-color-extra-light: #35373b;
   --secondary-color: rgb(147, 38, 38);
   --secondary-color-dark: #bb4e1b;
   --text-light: #d1d5db;
   --white: #ffffff;
   --max-width: 1200px;
-} */
+} 
 
 * {
   padding: 0;
   margin: 0;
   box-sizing: border-box;
-}
-
-
-
-.btn {
-  padding: 1rem 2rem;
-  outline: none;
-  border: none;
-  font-size: 1rem;
-  color: var(--white);
-  background-color: var(--secondary-color);
-  border-radius: 5px;
-  cursor: pointer;
-  transition: 0.3s;
-}
-
-.btn:hover {
-  background-color: var(--secondary-color-dark);
 }
 
 img {
@@ -94,6 +73,8 @@ body {
 }
 
 nav {
+  position: relative;
+  z-index: 10;
   max-width: 1200px;
   margin: auto;
   padding: 2rem 1rem;

@@ -56,13 +56,13 @@ export default {
                 .then((res) => {
                     console.log(res)
                     Swal.fire({
-                            title: 'Success!',
-                            text: res.data.message,
-                            icon: 'success',
-                            iconColor: '#034AAD', 
-                            confirmButtonColor: '#034AAD', 
-                            confirmButtonText: 'OK'
-                        }).then(() => {
+                        title: 'Success!',
+                        text: res.data.message,
+                        icon: 'success',
+                        iconColor: '#034AAD',
+                        confirmButtonColor: '#034AAD',
+                        confirmButtonText: 'OK'
+                    }).then(() => {
                         location.reload();
                     });
                     this.errorList = '';
@@ -81,6 +81,9 @@ export default {
                     }
                 });
         },
+        goBack() {
+            this.$router.go(-1);
+        }
     },
 };
 </script>
@@ -111,7 +114,7 @@ export default {
                 <div class="col-8">
                     <div class="card">
                         <div class="card-header">
-                            <h4>Edit Player</h4>
+                            <h4>Player Information</h4>
                         </div>
                         <div class="card-body">
 
@@ -123,22 +126,22 @@ export default {
 
                             <div class="mb-3">
                                 <label for="">Player Name</label>
-                                <input type="text" v-model="model.player.player_name" class="form-control">
+                                <input type="text" v-model="model.player.player_name" class="form-control" >
                             </div>
                             <div class="mb-3">
                                 <label for="">Team</label>
-                                <select v-model="model.player.team" class="form-select">
+                                <select v-model="model.player.team" class="form-select" >
                                     <option value="" disabled>Select a team</option>
                                     <option v-for="team in teams" :key="team.id" :value="team.team_name">{{
                                         team.team_name
-                                    }}
+                                        }}
                                     </option>
                                 </select>
                             </div>
                             <div class="mb-3">
                                 <label for="">Jersey Number</label>
                                 <input type="number" v-model="model.player.jersey_number" class="form-control" max="99"
-                                    min="0">
+                                    min="0" >
                             </div>
                             <div class="mb-3">
                                 <label for="">Position</label>
@@ -155,7 +158,7 @@ export default {
                                 <span class="update">
                                     <button type="button" class="save-btn" @click="updatePlayer">Update</button>
                                 </span>
-                                <RouterLink class="back-btn" to="/players">Back</RouterLink>
+                                <button class="back-btn" @click="goBack()">Back</button>
                             </div>
                         </div>
                     </div>

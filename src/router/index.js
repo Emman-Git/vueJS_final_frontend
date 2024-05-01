@@ -4,6 +4,7 @@ import AboutView from '@/views/AboutView.vue'
 import PlayerView from '@/views/Players/View.vue'
 import PlayerCreate from '@/views/Players/Create.vue'
 import PlayerEdit from '@/views/Players/Edit.vue'
+import PlayerInfo from '@/views/Players/Info.vue'
 import PlayerArchive from '@/views/Players/Archive.vue'
 import TeamView from '@/views/Teams/View.vue'
 import TeamCreate from '@/views/Teams/Create.vue'
@@ -39,6 +40,11 @@ const router = createRouter({
       path: '/players/:id/edit',
       name: 'playerEdit',
       component: PlayerEdit
+    },
+    {
+      path: '/players/:id/info',
+      name: 'playerInfo',
+      component: PlayerInfo
     },
     {
       path: '/players/archive',

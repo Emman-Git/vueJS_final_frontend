@@ -86,6 +86,7 @@ export default {
                         All Teams
                         <span class="float-end">
                             <RouterLink class="archive" to="/teams/archive">Archive</RouterLink>
+                            <RouterLink class="standings-btn" to="/teams/standings">Standings</RouterLink>
                             <RouterLink class="add-btn" to="/teams/create">Add Team</RouterLink>
                         </span>
                     </h4>
@@ -189,6 +190,24 @@ export default {
     border-radius: 5px;
     outline: none;
     transition: border-color 0.3s ease;
+}
+
+.standings-btn {
+    margin-right: 25px;
+    background-color: #111317;
+    border: 2px solid white;
+    border-radius: 10%;
+    color: white;
+    padding: 10px 12px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    transition: background-color 0.3s ease;
+}
+
+.standings-btn:hover {
+    background-color: #3c3e42;
 }
 
 .add-btn {

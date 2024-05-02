@@ -5,31 +5,33 @@ import HelloWorld from './components/HelloWorld.vue'
 
 <template>
   <header>
+
     <body>
-    <nav>
-      <div class="nav__logo">
-        <router-link to="/"><a href="#"><img src="/src/assets/MPBL Logo Hori Final.png" alt="logo" /></a></router-link>
-      </div>
-      <ul class="nav__links">
-    <li class="link">
-      <router-link to="/">Home</router-link>
-    </li>
-    <li class="link">
-      <router-link to="/about">About Us</router-link>
-    </li>
-    <li class="link">
-      <router-link to="/players">Players</router-link>
-    </li>
-    <li class="link">
-      <router-link to="/teams">Teams</router-link>
-    </li>
-    <li class="link">
-      <router-link to="/scoreboard">Scoreboard</router-link>
-    </li>
-  </ul>
-    </nav>
+      <nav>
+        <div class="nav__logo">
+          <router-link to="/"><a href="#"><img src="/src/assets/MPBL Logo Hori Final.png"
+                alt="logo" /></a></router-link>
+        </div>
+        <ul class="nav__links">
+          <li class="link">
+            <router-link to="/">Home</router-link>
+          </li>
+          <li class="link">
+            <router-link to="/about">About Us</router-link>
+          </li>
+          <li class="link">
+            <router-link to="/players">Players</router-link>
+          </li>
+          <li class="link">
+            <router-link to="/teams">Teams</router-link>
+          </li>
+          <li class="link">
+            <router-link to="/scoreboard">Scoreboard</router-link>
+          </li>
+        </ul>
+      </nav>
     </body>
-  </header> 
+  </header>
 
 
   <RouterView />
@@ -37,6 +39,7 @@ import HelloWorld from './components/HelloWorld.vue'
 
 <style scoped>
 @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap");
+
 :root {
   --primary-color: #111317;
   --secondary-color: rgb(147, 38, 38);
@@ -44,7 +47,7 @@ import HelloWorld from './components/HelloWorld.vue'
   --text-light: #d1d5db;
   --white: #ffffff;
   --max-width: 1200px;
-} 
+}
 
 * {
   padding: 0;
@@ -74,6 +77,7 @@ body {
 
 nav {
   position: relative;
+  height: 10vh;
   z-index: 10;
   max-width: 1200px;
   margin: auto;
@@ -97,13 +101,23 @@ nav {
   gap: 3rem;
 }
 
-.link a {
+.dropdown-item {
+  background-color: #111317;
+  color: white;
+  padding: 10px;
+}
+
+.link a,
+.dropdown-item,
+.nav_link {
   position: relative;
   padding-bottom: 0.75rem;
   color: #ffffff;
 }
 
-.link a::after {
+.link a::after,
+.dropdown-item::after,
+.nav_link::after {
   content: "";
   position: absolute;
   height: 2px;
@@ -114,7 +128,8 @@ nav {
   transition: 0.3s;
 }
 
-.link a:hover::after {
+.link a:hover::after,
+.dropdown-item:hover::after {
   width: 50%;
 }
 </style>

@@ -30,6 +30,10 @@ export default {
                     console.error('Error fetching players:', error);
                 });
         },
+        goBack() {
+        console.log('Back')
+            this.$router.go(-1);
+        }
     },
 };
 </script>
@@ -42,7 +46,7 @@ export default {
                     <h4>
                         Players of {{ teamLoc }} {{ teamName }}
                         <span class="float-end">
-                            <RouterLink class="back-btn" to="/teams">Go Back</RouterLink>
+                            <button class="back-btn" @click="goBack()">Go Back</button>
                         </span>
 
                     </h4>

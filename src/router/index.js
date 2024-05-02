@@ -11,6 +11,7 @@ import TeamCreate from '@/views/Teams/Create.vue'
 import TeamEdit from '@/views/Teams/Edit.vue'
 import TeamArchive from '@/views/Teams/Archive.vue'
 import TeamInfo from '@/views/Teams/Info.vue'
+import Standings from '@/views/Teams/Standings.vue'
 import Scoreboard from '@/views/Scoreboard/View.vue'
 
 const router = createRouter({
@@ -76,6 +77,12 @@ const router = createRouter({
       name: 'teamInfo',
       component: TeamInfo,
       props: true,
+    },
+    {
+      path: '/teams/standings',
+      name: 'standings',
+      component: Standings,
+      // props: true,
     },
     {
       path: '/scoreboard',

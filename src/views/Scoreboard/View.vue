@@ -18,7 +18,7 @@ export default {
       count1: 0,
       count2: 0,
       timer: '',
-      duration: 30,
+      duration: 300,
       isTimerRunning: false,
       shotClock: 24,
       endSC: false,
@@ -160,7 +160,7 @@ export default {
       }
     },
     resetTimer() {
-      this.duration = 30;
+      this.duration = 300;
     },
     addToCounter1() {
       this.count1 = this.count1 + 1

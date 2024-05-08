@@ -138,7 +138,7 @@ export default {
                                 <select v-model="model.team.conference" class="form-select">
                                     <option value="" disabled>Select a conference</option>
                                     <option value="NCR">NCR</option>
-                                    <option value="East Luzon">East Luzon</option>
+                                    <option value="Central Luzon">Central Luzon</option>
                                     <option value="North Luzon">North Luzon</option>
                                     <option value="South Luzon">South Luzon</option>
                                     <option value="Visayas">Visayas</option>

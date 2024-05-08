@@ -30,7 +30,7 @@
         <h1>Marc Emmanuel Ramos </h1>
         <hr>
         <p>
-          Marc Emmanuel Ramos, a dynamic leader with a passion for basketball, serves as the commissioner of Manny Pacquiao's Basketball League (MPBL). His visionary leadership has propelled the league to new heights, emphasizing integrity, fairness, and community engagement. Under Ramos' guidance, [League Name] has flourished, fostering talent development and social impact initiatives. Join us as we continue to elevate the game under Ramos' inspired leadership.
+          Marc Emmanuel Ramos, a dynamic leader with a passion for basketball, serves as the commissioner of Manny Pacquiao's Basketball League (MPBL). His visionary leadership has propelled the league to new heights, emphasizing integrity, fairness, and community engagement. Under Ramos' guidance, MPBL has flourished, fostering talent development and social impact initiatives. Join us as we continue to elevate the game under Ramos' inspired leadership.
         </p>
       </div>
       <div class="main-img">

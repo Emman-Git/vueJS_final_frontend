@@ -185,7 +185,7 @@ export default {
 <style scoped>
 .whole {
     width: 100%;
-    height: 88.5vh;
+    height: 90vh;
     background-color: rgb(37, 37, 37);
     display: flex;
     position: relative;

@@ -74,7 +74,7 @@ export default {
     previousQuarter() {
       let prevIndex = this.quarterIndex - 1;
       if (prevIndex < 0) {
-        prevIndex = this.quarters.length - 1; // Loop back to the last item
+        prevIndex = this.quarters.length - 1; 
       }
       return this.quarters[prevIndex];
     },

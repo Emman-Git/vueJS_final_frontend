@@ -8,7 +8,7 @@
         <h4>REPRESENTING BATANG GEN SAN</h4>
         <h1><span>MANNY PACQUIAO'S</span> BASKETBALL LEAGUE</h1>
         <p>
-          Welcome to Manny's Basketball League, where the court is your canvas and the game is your masterpiece. 
+          Welcome to Manny Pacquiao's Basketball League, where the court is your canvas and the game is your masterpiece. 
           Join us in unleashing your potential on the hardwood as you embark on a journey towards a stronger, fitter, 
           and more confident version of yourself.
         </p>
